@@ -28,8 +28,8 @@ class IR_sensob:
 
     def recommend(self):
     	if right and not left:
-    		recommendation = ["left", 0.5]
+    		recommendation = ["left 45", 0.5]
     	elif left and not right:
-    		recommendation = ["right", 0.5]
+    		recommendation = ["right 45", 0.5]
     	else:
     		recommendation = ["None", 0]
