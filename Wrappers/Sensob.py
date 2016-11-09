@@ -13,3 +13,6 @@ class Sensob:
 
     def get_value(self):
         raise NotImplementedError
+
+	def recommend(self):
+		pass
