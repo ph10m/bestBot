@@ -16,7 +16,13 @@ class ImageMod:
             self.x, self.y = self.image.size
         else:
             print('Set up an empty Image class')
-			
+            
+    def setImage(self, img):
+        self.image = img
+        self.x, self.y = self.image.size
+
+    def get_pixel(self,x,y): return self.image.getpixel((x,y))
+    
     def getCopy(self):
         # print('Generating a copy of', self.name)
         return self.image.copy()
@@ -31,8 +37,30 @@ class ImageMod:
 
     def keepMax(self):
         # leaves only the dominant band in each pixel
-        print ('~~The winner takes it allllllllllll~~')
+        print ('Simplifying image!')
         def f(x):
             _max = max(x)
             return tuple([(i if i == _max else 0) for i in x])
         return self.apply(f)
+        
+        
+    def isWall(self):
+        simplified = self.keepMax()
+        count, r, g, b = 0,0,0,0
+        for horizontal in range(0,self.x, self.x/10):
+            for vertical in range(0,self.y,self.y/10):
+                # sample every 10 pixels and get their value
+                count += 1
+                r,g,b = self.get_pixel(horizontal, vertical)
+                if r>200:   r+=1
+                elif g>200: g+=1
+                else:       b+=1
+        # check if either color is over-represented, thus it detects a wall (>70% of the image is covered)
+        def isCovered(band,total):
+            if band/total > 0.7:
+                return True
+            else return False
+        if isCovered(r,count) or isCovered(g,count) or isCovered(b,count):
+            # this is a wall
+            return True
+        return False
