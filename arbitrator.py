@@ -22,12 +22,13 @@ class Arbitrator:
             else:
                 rand_num -= recommendation[1]
 
-"""
-class Bbcon:
-    def __init__(self):
-        self.recommendations = [["a", 0.5], ["b", 0.7], ["c", 0.9], ["d", 1]]
-        arb = Arbitrator(self)
-        print(arb.choose_action())
 
-if __name__ == "__main__":
-    bbcon = Bbcon()"""
+
+# class Bbcon:
+#     def __init__(self):
+#         self.recommendations = [["a", 0.5], ["b", 0.7], ["c", 0.9], ["d", 1]]
+#         arb = Arbitrator(self)
+#         print(arb.choose_action())
+
+# if __name__ == "__main__":
+#     bbcon = Bbcon()
