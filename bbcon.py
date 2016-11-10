@@ -1,6 +1,4 @@
 from zumo_button import ZumoButton as btn
-from motors import Motors as motor
-
 from arbitrator import Arbitrator as ARB
 
 

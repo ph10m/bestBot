@@ -8,6 +8,7 @@ class Ultrasonic():
         self.trig_pin = 26
         self.echo_pin = 11
         self.setup()
+        print ('Echo sensor initialized!')
 
     def setup(self):
         GPIO.setmode(GPIO.BOARD)
