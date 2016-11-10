@@ -1,5 +1,6 @@
 from zumo_button import ZumoButton as btn
 from arbitrator import Arbitrator as ARB
+from motob import Motob
 import time
 
 
@@ -16,6 +17,7 @@ class BBCON:
     def __init__(self):
         self.ARB = ARB(self)
         self.recommendations = []
+        self.motob = Motob()
 
         self.behaviors = []         # all behaviors
         self.active = []            # active behaviors

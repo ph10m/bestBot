@@ -1,47 +1,59 @@
+from motors import Motors
 class Motob:
     def __init__(self):
-        # definer funksjoner for alle sensorene i en dict
-        # self.sensors = {
-            # Camera:             self.react_camera,
-            # IRProximitySensor:  self.react_IR,
-            # ReflectanceSensors: self.react_reflect,
-            # Ultrasonic:         self.react_ultra
-        # }
-        self.value = 0
-
+        self.motor = Motors()
+        self.recommendation
+        self.funcs = {
+            left: self.left,
+            right: self.right,
+            random: self.random,
+            rewind: self.rewind
+        }
+        self.value = -1
+        self.speed = 0.5
+        
 	def update(self, recommendation):
-		self.value = recommendation
 		self.operate(recommendation)
 		
 	def operate(recommended):
-		pass
-
-    # def run(sensor, value):
-        # # tar inn en tuppel med sensor, verdi
-        # '''
-        # feks:
-        # kamera ser at et objekt dekker nesten hele field-of-view (objektet er nært)
-        # får da inn en høy verdi i tuppelen, og må feks rygge lengre bak, enn om objektet hadde vært lengre unna
-        # '''
-        # sensor = sensor.__class__.__name__
-        # print ('Motor controller received the highest priority from',sensor,'with a value of',value)
+        func, self.value = recommended.split(" ")
+        if func in funcs:
+            self.funcs[func]()
+        else:
+            self.wander()
+            
+    def wander(self):
+        self.motors.forward(speed = self.speed, dur = 5)
+    
+    def degree_to_duration(self, degrees):
+        # 0.75 per runde på full speed
+        # anta halv speed, så ca 1.5 sec per runde
+        time_per_round = 1.5
+        time_per_degree = 1.5/360
+        return degree*time_per_degree
         
-        # # ...finnes sensoren?
-        # if sensor in self.sensors:
-            # # kjører funksjonen definert i self.sensors-dict
-            # self.sensors[name]()
-            # current_value = value
+    def get_degrees():
+        return self.degree_to_duration(self.value)
+    
+    def left(self):
+        self.motor.left(speed=self.speed, self.get_degrees())
         
-    # # definer hvordan motoren skal reagere for hver type sensor - bruk self.value
-    # def react_camera(self):
-        # pass
+    def right(self):
+        self.motor.right(speed=self.speed, self.get_degrees())
         
-    # def react_IR(self):
-        # pass
+    from random import randint
+    def random(self):
+        # turn left or right by random
+        # turn 90 degrees regardless
+        self.value = 90
+        if randint(0,100)>50:
+            self.right()
+        else:
+            self.left()
         
-    # def react_reflect(self):
-        # pass
-        
-    # def react_ultra(self):
-        # pass
-
+    def rewind(self):
+        # run back for a while
+        if self.value <= 0:
+            self.value = 2      # set a default value
+        self.motor.backward(speed=self.speed, self.value)
+            
