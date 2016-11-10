@@ -1,16 +1,11 @@
 from zumo_button import ZumoButton as btn
 from arbitrator import Arbitrator as ARB
+from behaviors import Follow_line, Avoid_collision, Avoid_walls
 import time
 
 
 button = btn()
 m = motor()
-def main():
-    button.wait_for_press()
-    m.forward(speed=0.5, dur=0.5)
-    m.backward(speed=0.5, dur=0.5)
-
-main()
 
 class BBCON:
     def __init__(self):
@@ -50,7 +45,7 @@ class BBCON:
             sensob.update()
 
         # Update all behaviors
-        for behavior in self.behaviors:
+        for behavior in self.active:
             behavior.update()               # Sjekk om dette funker!
 
         recommendation = self.ARB.choose_action()
@@ -65,3 +60,21 @@ class BBCON:
         # Reset sensobs
         for sensob in self.sensobs:
             sensob.reset()
+
+class Main:
+
+    def __init__(self):
+        self.bbcon = BBCON()
+        self.follow_line = Follow_line(self.bbcon)
+        self.avoid_collision = Avoid_collision(self.bbcon)
+        self.avoid_walls = Avoid_walls(self.bbcon)
+        self.bbcon.add_behavior(self.follow_line)
+        self.bbcon.add_behavior(self.avoid_collision)
+        self.bbcon.add_behavior(self.avoid_walls)
+
+    def main():
+        while True:
+            self.bbcon.run()
+
+main = Main()
+main.main()
