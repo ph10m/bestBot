@@ -46,13 +46,13 @@ class BBCON:
 
         # Update all behaviors
         for behavior in self.active:
-            behavior.update()               # Sjekk om dette funker!
+            behavior.update()
 
         recommendation = self.ARB.choose_action()
 
         # Update motobs
         for motob in self.motobs:
-            motob.update(recommendation)
+            motob.update(recommendation[0])
 
         # Wait
         time.sleep(0.3)
@@ -71,6 +71,15 @@ class Main:
         self.bbcon.add_behavior(self.follow_line)
         self.bbcon.add_behavior(self.avoid_collision)
         self.bbcon.add_behavior(self.avoid_walls)
+        answer = input("Would you like to activate follow_line? ")
+        if answer == 'y':
+            self.bbcon.activate(follow_line)
+        answer = input("Would you like to activate avoid_collision? ")
+        if answer == 'y':
+            self.bbcon.activate(avoid_collision)
+        answer = input("Would you like to activate avoid_walls? ")
+        if answer == 'y':
+            self.bbcon.activate(avoid_walls)
 
     def main():
         while True:
