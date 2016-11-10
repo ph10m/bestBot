@@ -15,6 +15,7 @@ main()
 class BBCON:
     def __init__(self):
         self.ARB = ARB(self)
+        self.recommendations = []
 
         self.behaviors = []         # all behaviors
         self.active = []            # active behaviors
@@ -41,6 +42,8 @@ class BBCON:
             self.active.remove(b)
 
     def run(self):
+
+        del recommendations[:]
 
         # Update all sensobs
         for sensob in self.sensobs:
