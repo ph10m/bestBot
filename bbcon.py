@@ -1,15 +1,12 @@
-from zumo_button import ZumoButton as btn
+# from zumo_button import ZumoButton as btn
 from arbitrator import Arbitrator as ARB
-<<<<<<< HEAD
 from motob import Motob
-=======
 from behaviors import Follow_line, Avoid_collision, Avoid_walls
->>>>>>> origin/master
 import time
 
 
-button = btn()
-m = motor()
+
+# m = motor()
 
 class BBCON:
     def __init__(self):
