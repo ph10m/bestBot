@@ -20,7 +20,6 @@ class IR_sensob:
         self.left = False
 
     def get_value(self):
-        update()
         self.value = self.sensor.get_value()
         self.right = value[0]
         self.left = value[1]
@@ -51,7 +50,6 @@ class Reflectance_sensob:
         self.recommendation = []
 
     def get_value(self):
-        update()
         value = sensor.get_value()
         for i in range(len(value)):
             bool_values[i] = value[i] > 0.85
