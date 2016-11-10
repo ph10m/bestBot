@@ -1,5 +1,6 @@
 from zumo_button import ZumoButton as btn
 from arbitrator import Arbitrator as ARB
+import time
 
 
 button = btn()
@@ -20,11 +21,7 @@ class BBCON:
         self.inactive = []          # inactive behaviors
 
         self.sensobs = []           # sensor objects
-        self.motobs = []            # motor object(s), useless?!?!
-        self.recommendations = []
-
-        self.timestamp = 0
-        self.motor_runtime = 0.5
+        self.motobs = []            # motor object(s)
 
     def add_behavior(self,b):
         self.behaviors.append(b)
@@ -51,19 +48,17 @@ class BBCON:
 
         # Update all behaviors
         for behavior in self.behaviors:
-            
+            behavior.update()               # Sjekk om dette funker!
 
-        recommendations = arbitrator.choose_action(self.sensobs)
+        recommendation = self.ARB.choose_action()
 
         # Update motobs
+        for motob in self.motobs:
+            motob.update(recommendation)
 
         # Wait
+        time.sleep(0.3)
 
         # Reset sensobs
-
-
-
-    def reset(self):
-        self.timestamp += 1
-        for sensor in self.sensobs:
-            sensor.reset()
+        for sensob in self.sensobs:
+            sensob.reset()
