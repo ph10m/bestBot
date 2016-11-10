@@ -4,7 +4,7 @@ class Arbitrator:
     def __init__(self, bbcon):
         self.bbcon = bbcon  # En pointer til bbcon-objektet
         recommendations = []
-        
+
     def choose_action(self):
         # hent ut en tilfeldig aksjon fra lista med en vektet sannsynlighet
         recommendations = self.bbcon.recommendations
@@ -15,7 +15,6 @@ class Arbitrator:
             else:
                 r_sum += recommendation[1]
         rand_num = uniform(0, r_sum)
-        print(rand_num)
         for recommendation in recommendations:
             if rand_num <= recommendation[1]:
                 return recommendation
