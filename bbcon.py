@@ -2,6 +2,9 @@
 from arbitrator import Arbitrator as ARB
 from motob import Motob
 from behaviors import Follow_line, Avoid_collision, Avoid_walls
+from sensobs import IR_sensob as IR
+from sensobs import Reflectance_sensob as REF
+from sensobs import Camera_sensob as CAM
 import time
 
 
@@ -17,47 +20,50 @@ class BBCON:
         self.behaviors = []         # all behaviors
         self.active = []            # active behaviors
         self.inactive = []          # inactive behaviors
-
-        self.sensobs = []           # sensor objects
-        self.motobs = []            # motor object(s)
+        
+        
+        _ir, _ref, _cam = IR(), REF(), CAM()
+        self.sensobs = [_ir, _ref, _cam]           # sensor objects
+        self.motobs = [self.motob]            # motor object(s)
 
     def add_behavior(self,b):
         self.behaviors.append(b)
         self.inactive.append(b)     # all behaviors are inactive be default
 
-    def add_sensob(self,s):
-        self.sensobs.append(s)
-
     def activate(self,b):
-        if b in self.inactive_behaviors and b in self.behaviors:
+        if b in self.inactive and b in self.behaviors:
+            print ('activating')
             self.active.append(b)
             self.inactive.remove(b)
 
     def deactivate(self,b):
-        if b in self.active_behaviors and b in self.behaviors:
+        if b in self.active and b in self.behaviors:
+            print ('deactivating')
             self.inactive.append(b)
             self.active.remove(b)
 
     def run(self):
 
-        del recommendations[:]
+        del self.recommendations[:]
 
         # Update all sensobs
+        print ('updating sensobs')
         for sensob in self.sensobs:
+            print ('updating',sensob.__class__.__name__)
             sensob.update()
 
         # Update all behaviors
+        print ('updating behaviors')
         for behavior in self.active:
             behavior.update()
-
+            
         recommendation = self.ARB.choose_action()
+        print ('recommendation = ',recommendation)
 
         # Update motobs
         for motob in self.motobs:
             motob.update(recommendation[0])
 
-        # Wait
-        time.sleep(0.3)
 
         # Reset sensobs
         for sensob in self.sensobs:
@@ -75,17 +81,18 @@ class Main:
         self.bbcon.add_behavior(self.avoid_walls)
         answer = input("Would you like to activate follow_line? ")
         if answer == 'y':
-            self.bbcon.activate(follow_line)
+            self.bbcon.activate(self.follow_line)
         answer = input("Would you like to activate avoid_collision? ")
         if answer == 'y':
-            self.bbcon.activate(avoid_collision)
+            self.bbcon.activate(self.avoid_collision)
         answer = input("Would you like to activate avoid_walls? ")
         if answer == 'y':
-            self.bbcon.activate(avoid_walls)
+            self.bbcon.activate(self.avoid_walls)
 
-    def main():
+        self.main()
+
+    def main(self):
         while True:
             self.bbcon.run()
 
 main = Main()
-main.main()

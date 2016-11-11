@@ -1,15 +1,15 @@
-from sensobs import IR_sensob, Reflenctance_sensob, Camera_sensob
+from sensobs import IR_sensob, Reflectance_sensob, Camera_sensob
 
 class Follow_line:
 
 	def __init__(self, bbcon):
 		self.bbcon = bbcon
-		self.sensor = Reflenctance_sensob()
+		self.sensor = Reflectance_sensob()
 		self.active_flag = False
 
-	def update():
+	def update(self):
 		value = self.sensor.get_value()
-		bbcon.recommendations.append(value)
+		self.bbcon.recommendations.append(value)
 
 class Avoid_collision:
 
@@ -18,7 +18,7 @@ class Avoid_collision:
 		self.sensor = IR_sensob()
 		self.active_flag = False
 
-	def update():
+	def update(self):
 		value = self.sensor.get_value()
 		bbcon.recommendations.append(value)
 
@@ -29,6 +29,6 @@ class Avoid_walls:
 		self.sensor = Camera_sensob()
 		self.active_flag = False
 
-	def update():
+	def update(self):
 		value = self.sensor.get_value()
 		bbcon.recommendations.append(value)

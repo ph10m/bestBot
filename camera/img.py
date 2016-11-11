@@ -59,7 +59,7 @@ class ImageMod:
         def isCovered(band,total):
             if band/total > 0.7:
                 return True
-            else return False
+            else: return False
         if isCovered(r,count) or isCovered(g,count) or isCovered(b,count):
             # this is a wall
             return True

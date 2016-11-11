@@ -54,10 +54,11 @@ class Reflectance_sensob:
         self.recommendation = []
 
     def get_value(self):
-        value = sensor.get_value()
+        value = self.sensor.get_value()
+        print (value)
         for i in range(len(value)):
-            bool_values[i] = value[i] > 0.85
-        return recommend()
+            self.bool_values[i] = value[i] > 0.85
+        return self.recommend()
 
     def recommend(self):
         if self.bool_values[0]:
@@ -102,8 +103,11 @@ class Camera_sensob:
         
     def update(self):
         tmp_dist = self.distance.update()
+        print (tmp_dist)
+        if tmp_dist is None:
+            tmp_dist = 50
         # between 10 and 20, returns a higher value for lower cm
-        if tmp_dist => 10 and tmp_dist <= 20:
+        if tmp_dist >= 10 and tmp_dist <= 20:
             priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
             self.react_near_wall(priority)
         elif tmp_dist < 10:

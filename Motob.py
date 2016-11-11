@@ -2,30 +2,34 @@ from motors import Motors
 from random import randint
 
 class Motob:
+
     def __init__(self):
         self.motor = Motors()
-        self.recommendation
-        self.funcs = {
-            left: self.left,
-            right: self.right,
-            random: self.random,
-            rewind: self.rewind
-        }
         self.value = -1
         self.speed = 0.5
+        funcs = {
+            "left": self.left,
+            "right": self.right,
+            "random": self.random,
+            "rewind": self.rewind
+        }
 
     def update(self, recommendation):
+        print ('operating',recommendation,'in motobs')
         self.operate(recommendation)
 
-    def operate(recommended):
-        func, self.value = recommended.split(" ")
-        if func in funcs:
-            self.funcs[func]()
-        else:
+    def operate(self, recommended):
+        if recommended == "None":
             self.wander()
+        else:
+            func, self.value = recommended.split(" ")
+            if func in funcs:
+                funcs[func]()
+            else:
+                self.wander()
 
     def wander(self):
-        self.motors.forward(speed = self.speed, dur = 5)
+        self.motor.forward(speed = self.speed, dur = 5)
 
     def degree_to_duration(self, degrees):
         # 0.75 per runde på full speed
@@ -34,14 +38,14 @@ class Motob:
         time_per_degree = 1.5/360
         return degree*time_per_degree
 
-    def get_degrees():
+    def get_degrees(self):
         return self.degree_to_duration(self.value)
 
     def left(self):
-        self.motor.left(speed=self.speed, self.get_degrees())
+        self.motor.left(speed=self.speed, dur=self.get_degrees())
 
     def right(self):
-        self.motor.right(speed=self.speed, self.get_degrees())
+        self.motor.right(speed=self.speed, dur=self.get_degrees())
 
     def random(self):
         # turn left or right by random
@@ -56,5 +60,5 @@ class Motob:
         # run back for a while
         if self.value <= 0:
             self.value = 2      # set a default value
-        self.motor.backward(speed=self.speed, self.value)
+        self.motor.backward(speed=self.speed, dur = self.value)
             

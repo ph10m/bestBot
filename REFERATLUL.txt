@@ -1,0 +1,3 @@
+alle sensobs blir oppdatert, men returnerer fortsatt [-1, ..., -1] på reflectance
+
+why tho
