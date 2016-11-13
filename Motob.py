@@ -1,12 +1,13 @@
 from motors import Motors
 from random import randint
+import time
 
 class Motob:
 
     def __init__(self):
         self.motor = Motors()
         self.value = -1
-        self.speed = 0.5
+        self.speed = 0.2
         self.funcs = {
             "left": self.left,
             "right": self.right,
@@ -30,12 +31,12 @@ class Motob:
                 self.wander()
 
     def wander(self):
-        self.motor.forward(speed = self.speed, dur = 5)
+        self.motor.forward(speed = self.speed, dur = 0.5)
 
     def degree_to_duration(self, degrees):
         # 0.75 per runde på full speed
         # anta halv speed, så ca 1.5 sec per runde
-        time_per_round = 3.0
+        time_per_round = 4
         time_per_degree = time_per_round/360
         return degrees*time_per_degree
 
@@ -43,10 +44,10 @@ class Motob:
         return self.degree_to_duration(self.value)
 
     def left(self):
-        self.motor.left(speed=self.speed, dur=self.get_degrees())
+        self.motor.left(speed=self.speed*2, dur=self.get_degrees())
 
     def right(self):
-        self.motor.right(speed=self.speed, dur=self.get_degrees())
+        self.motor.right(speed=self.speed*2, dur=self.get_degrees())
 
     def random(self):
         # turn left or right by random

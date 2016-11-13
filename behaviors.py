@@ -45,7 +45,7 @@ class Avoid_walls:
         
     def update(self):
         self.counter += 1
-        if self.counter == 20:
+        if self.counter == 10:
             value = self.sensor.get_value()
             self.counter = 0
             self.bbcon.add_rec(value)

@@ -42,7 +42,7 @@ class IR_sensob:
 class Reflectance_sensob:
 
     def __init__(self):
-        self.sensor = Ref_sensor(True)  # True = autocalibration, takes 5 seconds
+        self.sensor = Ref_sensor(False,250,1800)  # True = autocalibration, takes 5 seconds
         self.bool_values = [False, False, False, False, False, False]
         self.recommendation = []
 
@@ -64,13 +64,13 @@ class Reflectance_sensob:
 
     def recommend(self):
         if self.bool_values[0]:
-            return ["left 60", 1]
+            return ["left 45", 1]
         elif self.bool_values[5]:
-            return ["right 60", 1]
+            return ["right 45", 1]
         elif self.bool_values[1]:
-            return ["left 30", 0.75]
+            return ["left 20", 0.9]
         elif self.bool_values[4]:
-            return ["right 30", 0.75]
+            return ["right 20", 0.9]
         else:
             return ["None", 0]
 
@@ -89,7 +89,8 @@ class Camera_sensob:
         self.img = None
         self.cm = -1
         self.rec = ('None',0)
-
+        self.counter = 0
+        
     def react_near_wall(self, priority):
         print ('I see something 10-20 cm away!')
         # turn around 180 degrees
@@ -104,19 +105,23 @@ class Camera_sensob:
         self.rec = ("rewind 0", priority)
         
     def update(self):
-        self.distance.update()
-        tmp_dist = self.distance.get_value()
-        print ('Dist =',tmp_dist)
-        if tmp_dist is None:
-            tmp_dist = 50
-        # between 10 and 20, returns a higher value for lower cm
-        if tmp_dist >= 10 and tmp_dist <= 20:
-            priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
-            self.react_near_wall(priority)
-        elif tmp_dist < 10:
-            priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
-            self.react_too_close(priority)
-        #don't want to update the camera every update run in sensobs!
+        if self.counter == 10:
+            self.counter = 0
+                
+            self.distance.update()
+            tmp_dist = self.distance.get_value()
+            print ('Dist =',tmp_dist)
+            if tmp_dist is None:
+                tmp_dist = 50
+            # between 10 and 20, returns a higher value for lower cm
+            if tmp_dist >= 10 and tmp_dist <= 20:
+                priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
+                self.react_near_wall(priority)
+            elif tmp_dist < 10:
+                priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
+                self.react_too_close(priority)
+            #don't want to update the camera every update run in sensobs!
+        self.counter+=1
 
     def take_picture(self):
         self.img = self.camera.update()
