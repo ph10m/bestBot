@@ -2,30 +2,38 @@ import os
 from PIL import Image
 
 class Camera():
-	def __init__(self, img_width=128, img_height=96, img_rot=0):
-		self.img = None
-		self.img_width = img_width
-		self.img_height = img_height
-		self.img_rot = img_rot
-		print ('Camera initialized!')
+    def __init__(self, img_width=128, img_height=96, img_rot=0):
+        self.img = None
+        self.name = 0
+        self.img_width = img_width
+        self.img_height = img_height
+        self.img_rot = img_rot
+        print ('Camera initialized!')
 
-	def get_img(self):
-		return self.img
+    def get_img(self):
+        return self.img
+        
+    def save_img(self):
+        imgname = "image"+str(self.name)
+        # self.img.show()
+        self.img.save(imgname+'.png',format='png')
 
-	def update(self):
-		print ('Fetching a new image...')
-		self.sensor_get_img()
-		return self.img
-		
-	def reset(self):
-		self.img = None
+    def update(self):
+        print ('Fetching a new image...')
+        self.sensor_get_img()
+        self.name += 1
+        self.save_img()
+        return self.img
+        
+    def reset(self):
+        self.img = None
 
-	def sensor_get_img(self):
-		# This is a OS call that takes a image and makes it accessible to PIL operations in the same directory
-		os.system('raspistill -t 1 -o image.png -w "' + str(self.img_width) + '" -h "' + str(self.img_height) + '" -rot "' + str(self.img_rot) + '"')
-		# Open the image just taken by raspicam
-		# Stores the RGB array in the img field
-		self.img = Image.open('image.png').convert('RGB')
+    def sensor_get_img(self):
+        # This is a OS call that takes a image and makes it accessible to PIL operations in the same directory
+        os.system('raspistill -t 1 -o image.png -w "' + str(self.img_width) + '" -h "' + str(self.img_height) + '" -rot "' + str(self.img_rot) + '"')
+        # Open the image just taken by raspicam
+        # Stores the RGB array in the img field
+        self.img = Image.open('image.png').convert('RGB')
 
 # Just testing the camera in python
 

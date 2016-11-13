@@ -3,13 +3,13 @@ from random import uniform
 class Arbitrator:
     def __init__(self, bbcon):
         self.bbcon = bbcon  # En pointer til bbcon-objektet
-        recommendations = []
 
     def choose_action(self):
         # hent ut en tilfeldig aksjon fra lista med en vektet sannsynlighet
         recommendations = self.bbcon.recommendations
         r_sum = 0
         for recommendation in recommendations:
+            print ('checking recommendation:',recommendation)
             if recommendation[1] == 1:  # Returnerer recommendationen dersom den har prioritet 1
                 return recommendation
             else:

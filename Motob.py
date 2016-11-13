@@ -7,7 +7,7 @@ class Motob:
         self.motor = Motors()
         self.value = -1
         self.speed = 0.5
-        funcs = {
+        self.funcs = {
             "left": self.left,
             "right": self.right,
             "random": self.random,
@@ -23,8 +23,9 @@ class Motob:
             self.wander()
         else:
             func, self.value = recommended.split(" ")
-            if func in funcs:
-                funcs[func]()
+            self.value = int(self.value)
+            if func in self.funcs:
+                self.funcs[func]()
             else:
                 self.wander()
 
@@ -34,9 +35,9 @@ class Motob:
     def degree_to_duration(self, degrees):
         # 0.75 per runde på full speed
         # anta halv speed, så ca 1.5 sec per runde
-        time_per_round = 1.5
-        time_per_degree = 1.5/360
-        return degree*time_per_degree
+        time_per_round = 3.0
+        time_per_degree = time_per_round/360
+        return degrees*time_per_degree
 
     def get_degrees(self):
         return self.degree_to_duration(self.value)

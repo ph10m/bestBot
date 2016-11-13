@@ -22,13 +22,18 @@ class IR_sensob:
         self.left = False
 
     def get_value(self):
-        self.left, self.right = self.sensor.get_value()
+        val = self.sensor.get_value()
+        if val is None:
+            self.left, self.right = False, False
+        else:
+            self.left, self.right = val
+        print (self.left, self.right)
         return self.recommend()
 
     def recommend(self):
         if self.right and not self.left:
             self.recommendation = ["left 45", 0.5]
-        elif left and not right:
+        elif self.left and not self.right:
             self.recommendation = ["right 45", 0.5]
         else:
             self.recommendation = ["None", 0]
@@ -53,7 +58,8 @@ class Reflectance_sensob:
         value = self.sensor.get_value()
         print (value)
         for i in range(len(value)):
-            self.bool_values[i] = value[i] > 0.85
+            self.bool_values[i] = value[i] < 0.25
+        print (self.bool_values)
         return self.recommend()
 
     def recommend(self):
@@ -95,11 +101,12 @@ class Camera_sensob:
     def react_too_close(self, priority):
         print ('I see something right in front!')
         # reverse for a bit and turn 90 degrees randomly
-        self.rec = ("rewind", priority)
+        self.rec = ("rewind 0", priority)
         
     def update(self):
-        tmp_dist = self.distance.update()
-        print (tmp_dist)
+        self.distance.update()
+        tmp_dist = self.distance.get_value()
+        print ('Dist =',tmp_dist)
         if tmp_dist is None:
             tmp_dist = 50
         # between 10 and 20, returns a higher value for lower cm
@@ -108,7 +115,7 @@ class Camera_sensob:
             self.react_near_wall(priority)
         elif tmp_dist < 10:
             priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
-            self.react_too_close()
+            self.react_too_close(priority)
         #don't want to update the camera every update run in sensobs!
 
     def take_picture(self):
@@ -116,10 +123,12 @@ class Camera_sensob:
         
     def isWall(self):
         # check for colours, patterns, etc.
+        self.take_picture()
         if self.img is not None:
             # convert image to one with max RGB values of each pixel
-            is_wall = self.imageMod.checkWall()
-            if self.imageMod.isWall():
+            self.imageMod.setImage(self.img)
+            is_wall = self.imageMod.isWall()
+            if is_wall:
                 return True
         return False
             

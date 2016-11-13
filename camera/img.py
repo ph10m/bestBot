@@ -4,6 +4,7 @@ class ImageMod:
     def __init__(self, file=False, img=False, name=None):
         self.name = name
         self.x, self.y = 0, 0
+        self.image = None
         if file:
             if name is None:
                 self.name = os.path.basename(file)
@@ -15,6 +16,7 @@ class ImageMod:
             self.image = img
             self.x, self.y = self.image.size
         else:
+            self.image = None
             print('Set up an empty Image class')
             
     def setImage(self, img):
@@ -29,7 +31,7 @@ class ImageMod:
 
     def apply(self,f):
         # applies a function on each pixel (rgb)
-        img = self.getCopy()
+        img = self.image.copy()
         for x in range(self.x):
             for y in range(self.y):
                 img.putpixel((x,y),f(img.getpixel((x,y))))
@@ -40,15 +42,17 @@ class ImageMod:
         print ('Simplifying image!')
         def f(x):
             _max = max(x)
-            return tuple([(i if i == _max else 0) for i in x])
+            xD = tuple([(i if i == _max else 0) for i in x])
+            # print('Colors:',xD)
+            return xD
         return self.apply(f)
         
         
     def isWall(self):
         simplified = self.keepMax()
         count, r, g, b = 0,0,0,0
-        for horizontal in range(0,self.x, self.x/10):
-            for vertical in range(0,self.y,self.y/10):
+        for horizontal in range(0,self.x, int(self.x/10)):
+            for vertical in range(0,int(self.y/2),int(self.y/5)):
                 # sample every 10 pixels and get their value
                 count += 1
                 r,g,b = self.get_pixel(horizontal, vertical)

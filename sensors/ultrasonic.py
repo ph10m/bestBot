@@ -8,7 +8,7 @@ class Ultrasonic():
         self.trig_pin = 26
         self.echo_pin = 11
         self.setup()
-        print ('Echo sensor initialized!')
+        print ('Echo sensor online!')
 
     def setup(self):
         GPIO.setmode(GPIO.BOARD)
@@ -17,6 +17,7 @@ class Ultrasonic():
 
     def update(self):
         self.value = self.sensor_get_value()
+        print ('value is',self.value)
 
     def reset(self):
         self.value = None
