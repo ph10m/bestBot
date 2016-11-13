@@ -9,7 +9,6 @@ class IR_sensob:
 
     def __init__(self):
         self.sensor = IR_sensor()
-        self.value = None
         self.right = False
         self.left = False
         self.recommendation = []
@@ -19,25 +18,22 @@ class IR_sensob:
 
     def reset(self):
         self.sensor.reset()
-        self.value = None
         self.right = False
         self.left = False
 
     def get_value(self):
-        self.value = self.sensor.get_value()
-        self.right = value[0]
-        self.left = value[1]
-        recommend()
-        return self.recommendation
+        self.left, self.right = self.sensor.get_value()
+        return self.recommend()
 
     def recommend(self):
-        if right and not left:
+        if self.right and not self.left:
             self.recommendation = ["left 45", 0.5]
         elif left and not right:
             self.recommendation = ["right 45", 0.5]
         else:
             self.recommendation = ["None", 0]
-
+        return self.recommendation
+        
 class Reflectance_sensob:
 
     def __init__(self):

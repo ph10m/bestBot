@@ -2,9 +2,6 @@
 from arbitrator import Arbitrator as ARB
 from motob import Motob
 from behaviors import Follow_line, Avoid_collision, Avoid_walls
-from sensobs import IR_sensob as IR
-from sensobs import Reflectance_sensob as REF
-from sensobs import Camera_sensob as CAM
 import time
 
 
@@ -22,25 +19,28 @@ class BBCON:
         self.inactive = []          # inactive behaviors
         
         
-        _ir, _ref, _cam = IR(), REF(), CAM()
-        self.sensobs = [_ir, _ref, _cam]           # sensor objects
+        # _ir, _ref, _cam = IR(), REF(), CAM()
+        self.sensobs = set()
         self.motobs = [self.motob]            # motor object(s)
 
     def add_behavior(self,b):
         self.behaviors.append(b)
         self.inactive.append(b)     # all behaviors are inactive be default
+        
 
     def activate(self,b):
         if b in self.inactive and b in self.behaviors:
             print ('activating')
             self.active.append(b)
             self.inactive.remove(b)
+            self.sensobs.add(b)
 
     def deactivate(self,b):
         if b in self.active and b in self.behaviors:
             print ('deactivating')
             self.inactive.append(b)
             self.active.remove(b)
+            self.sensobs.remove(b)
 
     def run(self):
 
@@ -62,8 +62,8 @@ class BBCON:
 
         # Update motobs
         for motob in self.motobs:
-            motob.update(recommendation[0])
-
+            #motob.update(recommendation[0])
+            pass
 
         # Reset sensobs
         for sensob in self.sensobs:
