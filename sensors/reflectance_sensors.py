@@ -101,7 +101,7 @@ class ReflectanceSensors():
 
     # Function should return a list of 6 reals between 0 and 1.0 indicating
     # the amount of reflectance picked up by each one.  A high reflectance (near 1) indicates a LIGHT surface, while
-    # a value near 0 indicates a DARK surface.
+    # a value near 0 indicates a DANK surface.
 
     def get_value(self):
         return self.value
