@@ -36,7 +36,7 @@ class Motob:
     def degree_to_duration(self, degrees):
         # 0.75 per runde på full speed
         # anta halv speed, så ca 1.5 sec per runde
-        time_per_round = 4
+        time_per_round = 2.5
         time_per_degree = time_per_round/360
         return degrees*time_per_degree
 
@@ -61,6 +61,6 @@ class Motob:
     def rewind(self):
         # run back for a while
         if self.value <= 0:
-            self.value = 2      # set a default value
+            self.value = 1      # set a default value
         self.motor.backward(speed=self.speed, dur = self.value)
             

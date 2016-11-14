@@ -32,7 +32,7 @@ class IR_sensob:
 class Reflectance_sensob:
 
     def __init__(self):
-        self.sensor = Ref_sensor(True)  # True = autocalibration, takes 5 seconds
+        self.sensor = Ref_sensor(False, 100, 2800)  # True = autocalibration, takes 5 seconds
         self.bool_values = [False, False, False, False, False, False]
 
     def update(self):
@@ -46,7 +46,7 @@ class Reflectance_sensob:
         value = self.sensor.get_value()
         print (value)
         for i in range(len(value)):
-            self.bool_values[i] = value[i] < 0.25
+            self.bool_values[i] = value[i] < 0.85
         # print (self.bool_values)
         return self.bool_values            
 

@@ -9,7 +9,7 @@ class Arbitrator:
         recommendations = self.bbcon.recommendations
         r_sum = 0
         for recommendation in recommendations:
-            print ('checking recommendation:',recommendation)
+            # print ('checking recommendation:',recommendation)
             if recommendation[1] == 1:  # Returnerer recommendationen dersom den har prioritet 1
                 return recommendation
             else:

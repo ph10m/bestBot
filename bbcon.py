@@ -70,7 +70,7 @@ class BBCON:
         for sensob in self.sensobs:
             sensob.reset()
             
-        time.sleep(0.1)
+        #time.sleep(0.1)
             
 
 # class Main:
@@ -116,7 +116,7 @@ def main():
     camera = Avoid_walls(bbcon)
     bbcon.add_behavior(camera)
     bbcon.activate(camera)
-    while True:
+    for i in range(100000):
         bbcon.run()
 
 main()
