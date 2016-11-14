@@ -31,7 +31,7 @@ class Motob:
                 self.wander()
 
     def wander(self):
-        self.motor.forward(speed = self.speed, dur = 0.5)
+        self.motor.forward(speed = self.speed, dur = 0.1)
 
     def degree_to_duration(self, degrees):
         # 0.75 per runde på full speed

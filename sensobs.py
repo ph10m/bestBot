@@ -28,16 +28,7 @@ class IR_sensob:
         else:
             self.left, self.right = val
         print (self.left, self.right)
-        return self.recommend()
-
-    def recommend(self):
-        if self.right and not self.left:
-            self.recommendation = ["left 45", 0.5]
-        elif self.left and not self.right:
-            self.recommendation = ["right 45", 0.5]
-        else:
-            self.recommendation = ["None", 0]
-        return self.recommendation
+        return [self.right, self.left]
         
 class Reflectance_sensob:
 
@@ -60,19 +51,7 @@ class Reflectance_sensob:
         for i in range(len(value)):
             self.bool_values[i] = value[i] < 0.25
         print (self.bool_values)
-        return self.recommend()
-
-    def recommend(self):
-        if self.bool_values[0]:
-            return ["left 45", 1]
-        elif self.bool_values[5]:
-            return ["right 45", 1]
-        elif self.bool_values[1]:
-            return ["left 20", 0.9]
-        elif self.bool_values[4]:
-            return ["right 20", 0.9]
-        else:
-            return ["None", 0]
+        return self.bool_values
 
             
 

@@ -12,8 +12,21 @@ class Follow_line:
         return self.sensor
 
     def update(self):
-        value = self.sensor.get_value()
-        self.bbcon.add_rec(value)
+        bool_values = self.sensor.get_value()
+        recommended = self.recommend(bool_values)
+        self.bbcon.add_rec(recommended)
+
+    def recommend(self):
+        if bool_values[0]:
+            return ["left 45", 1]
+        elif bool_values[5]:
+            return ["right 45", 1]
+        elif bool_values[1]:
+            return ["left 20", 0.9]
+        elif bool_values[4]:
+            return ["right 20", 0.9]
+        else:
+            return ["None", 0]
 
 class Avoid_collision:
 
@@ -28,8 +41,17 @@ class Avoid_collision:
 
     def update(self):
         value = self.sensor.get_value()
-        print('IR Side:',value)
-        self.bbcon.add_rec(value)
+        recommended = self.recommend(value[0], value[1])
+        self.bbcon.add_rec(recommended)
+
+    def recommend(self, right, left):
+        if right and not left:
+            recommendation = ["left 45", 0.5]
+        elif left and not right:
+            recommendation = ["right 45", 0.5]
+        else:
+            recommendation = ["None", 0]
+        return recommendation
 
 class Avoid_walls:
 
