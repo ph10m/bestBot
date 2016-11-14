@@ -42,7 +42,7 @@ class ImageMod:
         print ('Simplifying image!')
         def f(x):
             _max = max(x)
-            xD = tuple([(i if i == _max else 0) for i in x])
+            xD = tuple([(i if i >= _max else 0) for i in x])
             # print('Colors:',xD)
             return xD
         return self.apply(f)
@@ -51,20 +51,22 @@ class ImageMod:
     def isWall(self):
         simplified = self.keepMax()
         count, r, g, b = 0,0,0,0
-        for horizontal in range(0,self.x, int(self.x/10)):
-            for vertical in range(0,int(self.y/2),int(self.y/5)):
+        for horizontal in range(0,self.x, int(self.x/20)):
+            for vertical in range(0, self.y,int(self.y/20)):
                 # sample every 10 pixels and get their value
                 count += 1
-                r,g,b = self.get_pixel(horizontal, vertical)
-                if r>200:   r+=1
-                elif g>200: g+=1
-                else:       b+=1
+                r,g,b = simplified.getpixel((horizontal, vertical))
+                if r>0:   r+=1
+                elif g>0: g+=1
+                elif b>0: b+=1
         # check if either color is over-represented, thus it detects a wall (>70% of the image is covered)
         def isCovered(band,total):
-            if band/total > 0.7:
+            if band/total > 0.5:
                 return True
             else: return False
+        simplified.save('simple.png',format='png')
         if isCovered(r,count) or isCovered(g,count) or isCovered(b,count):
             # this is a wall
+            print ('WELL THAT IS A WALL INDEED')
             return True
         return False

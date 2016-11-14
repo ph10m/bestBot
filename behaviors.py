@@ -16,15 +16,15 @@ class Follow_line:
         recommended = self.recommend(bool_values)
         self.bbcon.add_rec(recommended)
 
-    def recommend(self):
+    def recommend(self, bool_values):
         if bool_values[0]:
-            return ["left 45", 1]
+            return ["left 25", 1]
         elif bool_values[5]:
-            return ["right 45", 1]
+            return ["right 25", 1]
         elif bool_values[1]:
-            return ["left 20", 0.9]
+            return ["left 10", 0.9]
         elif bool_values[4]:
-            return ["right 20", 0.9]
+            return ["right 10", 0.9]
         else:
             return ["None", 0]
 
@@ -66,8 +66,5 @@ class Avoid_walls:
         return self.sensor
         
     def update(self):
-        self.counter += 1
-        if self.counter == 10:
-            value = self.sensor.get_value()
-            self.counter = 0
-            self.bbcon.add_rec(value)
+        value = self.sensor.get_value()
+        self.bbcon.add_rec(value)

@@ -1,4 +1,4 @@
-# from zumo_button import ZumoButton as btn
+from zumo_button import ZumoButton as btn
 from arbitrator import Arbitrator as ARB
 from motob import Motob
 from behaviors import Follow_line, Avoid_collision, Avoid_walls
@@ -50,7 +50,7 @@ class BBCON:
         # Update all sensobs
         print ('updating sensobs')
         for sensob in self.sensobs:
-            print ('updating',sensob.__class__.__name__)
+            # print ('updating',sensob.__class__.__name__)
             sensob.update()
 
         # Update all behaviors
@@ -69,6 +69,8 @@ class BBCON:
         # Reset sensobs
         for sensob in self.sensobs:
             sensob.reset()
+            
+        time.sleep(0.1)
             
 
 # class Main:
@@ -98,8 +100,11 @@ class BBCON:
             # self.bbcon.run()
 
             
+# button = btn()
 def main():
     bbcon = BBCON()
+    # button.wait_for_press()
+    
     follow = Follow_line(bbcon)
     bbcon.add_behavior(follow)
     bbcon.activate(follow)
@@ -111,7 +116,6 @@ def main():
     camera = Avoid_walls(bbcon)
     bbcon.add_behavior(camera)
     bbcon.activate(camera)
-    
     while True:
         bbcon.run()
 

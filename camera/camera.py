@@ -22,7 +22,7 @@ class Camera():
         print ('Fetching a new image...')
         self.sensor_get_img()
         self.name += 1
-        self.save_img()
+        # self.save_img()
         return self.img
         
     def reset(self):

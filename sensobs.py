@@ -11,7 +11,6 @@ class IR_sensob:
         self.sensor = IR_sensor()
         self.right = False
         self.left = False
-        self.recommendation = []
 
     def update(self):
         self.sensor.update()
@@ -33,9 +32,8 @@ class IR_sensob:
 class Reflectance_sensob:
 
     def __init__(self):
-        self.sensor = Ref_sensor(False,250,1800)  # True = autocalibration, takes 5 seconds
+        self.sensor = Ref_sensor(True)  # True = autocalibration, takes 5 seconds
         self.bool_values = [False, False, False, False, False, False]
-        self.recommendation = []
 
     def update(self):
         self.sensor.update()
@@ -43,17 +41,14 @@ class Reflectance_sensob:
     def reset(self):
         self.sensor.reset()
         self.bool_values = [False, False, False, False, False, False]
-        self.recommendation = []
 
     def get_value(self):
         value = self.sensor.get_value()
         print (value)
         for i in range(len(value)):
             self.bool_values[i] = value[i] < 0.25
-        print (self.bool_values)
-        return self.bool_values
-
-            
+        # print (self.bool_values)
+        return self.bool_values            
 
 '''
 The camera should only operate whenever
@@ -81,16 +76,15 @@ class Camera_sensob:
     def react_too_close(self, priority):
         print ('I see something right in front!')
         # reverse for a bit and turn 90 degrees randomly
-        self.rec = ("rewind 0", priority)
+        self.rec = ("rewind 0", 1)
         
     def update(self):
-        if self.counter == 10:
-            self.counter = 0
-                
+        #don't want to update the camera every update run in sensobs!
+        if self.counter == 5:
             self.distance.update()
             tmp_dist = self.distance.get_value()
             print ('Dist =',tmp_dist)
-            if tmp_dist is None:
+            if tmp_dist > 2500 or tmp_dist is None:
                 tmp_dist = 50
             # between 10 and 20, returns a higher value for lower cm
             if tmp_dist >= 10 and tmp_dist <= 20:
@@ -99,8 +93,8 @@ class Camera_sensob:
             elif tmp_dist < 10:
                 priority = 1 - 0.9 * tmp_dist / 50  # halves the value and mulitplies it by 0.1
                 self.react_too_close(priority)
-            #don't want to update the camera every update run in sensobs!
-        self.counter+=1
+            self.counter = 0
+        self.counter += 1
 
     def take_picture(self):
         self.img = self.camera.update()
